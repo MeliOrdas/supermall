@@ -14,6 +14,7 @@ export default {
 
 <style>
 .feature img {
-  width: 100%;
+  width: 101%;
+  padding-right: 2px;
 }
 </style>

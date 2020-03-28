@@ -19,13 +19,15 @@ export default {
       default () {
         return [];
       }
-    }
-  },
-  methods: {
-
+    },
   },
 }
 </script>
 
 <style>
+.goods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 </style>

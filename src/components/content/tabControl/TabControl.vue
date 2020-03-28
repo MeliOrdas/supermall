@@ -25,12 +25,14 @@ export default {
   methods: {
     tabClick (index) {
       this.currentIndex = index;
+      this.$emit('tabClick', index);
+      // console.log(index);
     }
   },
 }
 </script>
 
-<style>
+<style scoped>
 .tab-control {
   display: flex;
   text-align: center;

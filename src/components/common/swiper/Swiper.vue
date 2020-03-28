@@ -3,9 +3,7 @@
     <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
       <slot></slot>
     </div>
-
     <slot name="indicator"></slot>
-
     <div class="indicator">
       <slot name="indicator" v-if="showIndicator && slideCount>1">
         <div
@@ -33,7 +31,7 @@ export default {
     },
     moveRatio: {
       type: Number,
-      default: .25
+      default: 0.25
     },
     showIndicator: {
       type: Boolean,
@@ -64,11 +62,9 @@ export default {
      */
     startTimer: function () {
       this.playTimer = window.setInterval(() => {
-        this.currentIndex++;//2
+        this.currentIndex++;
         this.scrollContent(-this.currentIndex * this.totalWidth);
       }, this.interval);
-      // console.log(this.playTimer);
-
     },
     stopTimer: function () {
       window.clearInterval(this.playTimer);
@@ -84,7 +80,6 @@ export default {
       // 1.开始滚动动画
       this.swiperStyle.transition = 'transform ' + this.animDuration + 'ms';
       this.setTransform(currentPosition);
-
 
       // 2.判断滚动到的位置
       this.checkPosition();
@@ -172,7 +167,7 @@ export default {
       this.setTransform(moveDistance);
     },
 
-    touchEnd: function () {
+    touchEnd: function (e) {
       // 1.获取移动的距离
       let currentMove = Math.abs(this.distance);
 
@@ -250,5 +245,7 @@ export default {
 
 .indi-item.active {
   background-color: rgba(212, 62, 46, 1);
+  padding: 0;
+  border-bottom: 0;
 }
 </style>
