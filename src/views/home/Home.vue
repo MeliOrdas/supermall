@@ -3,22 +3,30 @@
     <nav-bar class="home-nav">
       <div slot="center">购物车</div>
     </nav-bar>
+    <tab-control
+      ref="tabControl1"
+      :titles="['流行','新款','精选']"
+      @tabClick="homeTabClick"
+      class="tab-control"
+      v-show="isTabFixed"
+    ></tab-control>
     <scroll
       class="content"
       ref="scroll"
       :probe-type="3"
       @srcoll="contentSrcoll"
       :pull-up-load="true"
+      @pullingUp="loadMore"
     >
       <!-- @pullingUp="loadMore" -->
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImgeLoad="swiperImge"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
-      <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="homeTabClick"></tab-control>
+      <tab-control ref="tabControl2" :titles="['流行','新款','精选']" @tabClick="homeTabClick"></tab-control>
       <goods-list :goods="returnControl"></goods-list>
     </scroll>
 
-    <back-top @click.native="backClick" v-if="imgShow" />
+    <back-top @click.native="backClick" v-show="imgShow" />
   </div>
 </template>
 
@@ -35,6 +43,7 @@ import BackTop from 'components/content/backTop/BackTop';
 
 
 import { getHomeMultiData, getHomeGoods } from 'network/home';
+import { debounce } from 'common/utils';
 
 export default {
 
@@ -69,7 +78,9 @@ export default {
         'sell': { page: 0, list: [] }
       },
       currentType: 'pop',
-      imgShow: false
+      imgShow: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     };
   },
 
@@ -80,16 +91,18 @@ export default {
   created () {
     // 数据请求的封装
     this.MgetHomeMultiData();
-
     // 商品数据请求
     this.MgetHomeGoods('pop');
     this.MgetHomeGoods('new');
     this.MgetHomeGoods('sell');
+  },
+  // 防止多次数据请求的内存泄漏
+  mounted () {
+    this.debounceSwitch(debounce, this.$refs.scroll.refresh);
+  },
+  destroyed () {
+    console.log('123456');
 
-    this.$bus.$on('itemImgLoad', () => {
-      // console.log(this);
-      this.$refs.scroll.refresh();
-    });
   },
 
   /**
@@ -97,6 +110,17 @@ export default {
    */
 
   methods: {
+    /**
+     * 生命周期使用封装
+     */
+    debounceSwitch (debounce, RefreshTree) {
+      const refresh = debounce(RefreshTree);
+      this.$bus.$on('itemImgLoad', () => {
+        refresh();
+        // this.$refs.scroll && this.$refs.scroll.refresh();
+      });
+    },
+
     /**
      * 事件监听相关方法
      */
@@ -108,17 +132,25 @@ export default {
         this.currentType = 'new';
       } else if (index === 2) {
         this.currentType = "sell";
-      }    },
+      }
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
+    },
 
     backClick () { this.$refs.scroll.scrollTo(); },
     contentSrcoll (position) {
       // console.log(position);
       this.imgShow = (-position.y) > 1000;
+      this.isTabFixed = (-position.y) > this.tabOffsetTop;
     },
-    // loadMore () {
-    //   this.MgetHomeGoods(this.currentType);
-    // },
+    loadMore () {
+      this.MgetHomeGoods(this.currentType);
+      // console.log(2);
+    },
+    swiperImge () {
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
 
+    },
 
 
     /**
@@ -142,7 +174,7 @@ export default {
         this.goods[type].page += 1;
         // console.log(this.goods[type].list);
 
-        // this.$refs.scroll.finishPullUp();
+        this.$refs.scroll.finishPullUp();
       });
     },
     // tabClick () {
@@ -179,9 +211,8 @@ export default {
 }
 
 .tab-control {
-  position: sticky;
-  top: 44px;
-  z-index: 3;
+  position: relative;
+  z-index: 9;
 }
 
 .content {
