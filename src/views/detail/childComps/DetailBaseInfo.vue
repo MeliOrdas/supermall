@@ -44,7 +44,7 @@ export default {
 }
 
 .info-title {
-  font-size: 18px;
+  font-size: 13px;
 }
 
 .info-price {
@@ -91,7 +91,8 @@ export default {
   padding: 20px 0 20px;
 }
 .info-service span {
-  font-size: 13px;
+  font-size: 10px;
+  color: black;
 }
 
 .info-service img {

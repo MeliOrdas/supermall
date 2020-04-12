@@ -42,6 +42,6 @@ export default {
 
 <style>
 .tabbar {
-  z-index: 8;
+  z-index: 7;
 }
 </style>

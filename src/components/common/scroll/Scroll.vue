@@ -39,13 +39,15 @@ export default {
 
     if (this.probeType === 2 || this.probeType === 3) {
       this.scroll.on('scroll', (position) => {
-        // console.log(position);
+        // console.log(position);   
         this.$emit('srcoll', position);
       });
     }
     // 3.监听上拉事件
     if (this.pullUpLoad) {
       this.scroll.on('pullingUp', () => {
+        // console.log(this.pullUpLoad);
+
         this.$emit('pullingUp');
       });
     }
@@ -59,6 +61,9 @@ export default {
     },
     refresh () {
       this.scroll && this.scroll.refresh();
+    },
+    getScrollY () {
+      return this.scroll ? this.scroll.y : 0;
     }
   },
 }

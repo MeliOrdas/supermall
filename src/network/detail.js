@@ -11,6 +11,14 @@ export function getDetail (iid) {
   }).catch(err => err);
 }
 
+export function getRecommend () {
+  return request({
+    url: "/api/h8/recommend",
+  }).catch(err => err);
+}
+
+
+
 export class Goods {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title;
@@ -34,5 +42,13 @@ export class Shop {
     this.sells = shopInfo.cSells;
     this.score = shopInfo.score;
     this.goodsCount = shopInfo.cGoods;
+  }
+}
+
+export class GoodsParam {
+  constructor(info, rule) {
+    this.image = info.images ? info.images : '';
+    this.info = info.set;
+    this.rule = rule.tables;
   }
 }

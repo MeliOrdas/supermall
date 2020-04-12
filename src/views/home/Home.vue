@@ -43,7 +43,7 @@ import BackTop from 'components/content/backTop/BackTop';
 
 
 import { getHomeMultiData, getHomeGoods } from 'network/home';
-import { debounce } from 'common/utils';
+import { itemListenerMixin } from 'common/mixin';
 
 export default {
 
@@ -80,9 +80,11 @@ export default {
       currentType: 'pop',
       imgShow: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      saveY: 0,
+      isTabFixed: false,
     };
   },
+  mixins: [itemListenerMixin],
 
   /**
    * 生命周期 创建组件时运行
@@ -98,12 +100,24 @@ export default {
   },
   // 防止多次数据请求的内存泄漏
   mounted () {
-    this.debounceSwitch(debounce, this.$refs.scroll.refresh);
-  },
-  destroyed () {
-    console.log('123456');
 
   },
+  destroyed () {
+    // console.log('123456');
+  },
+  activated () {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    // console.log('点回来');
+    this.$refs.scroll.refresh();
+
+  },
+  deactivated () {
+    // console.log('点进来');
+    this.saveY = this.$refs.scroll.getScrollY();
+    // console.log(this.saveY);
+
+  },
+
 
   /**
    * 组件方法
@@ -113,13 +127,6 @@ export default {
     /**
      * 生命周期使用封装
      */
-    debounceSwitch (debounce, RefreshTree) {
-      const refresh = debounce(RefreshTree);
-      this.$bus.$on('itemImgLoad', () => {
-        refresh();
-        // this.$refs.scroll && this.$refs.scroll.refresh();
-      });
-    },
 
     /**
      * 事件监听相关方法
@@ -143,12 +150,15 @@ export default {
       this.imgShow = (-position.y) > 1000;
       this.isTabFixed = (-position.y) > this.tabOffsetTop;
     },
+    // 传入首页page
     loadMore () {
       this.MgetHomeGoods(this.currentType);
       // console.log(2);
     },
+    // 获取组件距离顶部的距离
     swiperImge () {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      // console.log(this.$refs.tabControl2.$el);
 
     },
 
@@ -172,7 +182,6 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.data.list);
         this.goods[type].page += 1;
-        // console.log(this.goods[type].list);
 
         this.$refs.scroll.finishPullUp();
       });
@@ -191,6 +200,7 @@ export default {
       return this.goods[this.currentType].list;
     }
   },
+
 }
 </script>
 

@@ -47,7 +47,6 @@ export default {
       }
     }
   },
-
 }
 </script>
 
@@ -69,17 +68,14 @@ export default {
   border: 2px solid #dbd7d7;
   border-radius: 25px;
 }
-
 .shop-middle-left,
 .info-goods,
 .info-salse {
   float: left;
 }
-
 .shop-middle-right {
   float: right;
 }
-
 .salse-counter,
 .goods-counter {
   font-size: 20px;
@@ -87,36 +83,30 @@ export default {
   margin-bottom: 10px;
   text-align: center;
 }
-
 .salse-text,
 .goods-text {
   font-size: 12px;
   text-align: center;
 }
-
 .info-salse,
 .info-goods {
   margin: 15px;
 }
-
 .info-goods {
   margin-right: 0;
   padding-right: 20px;
   border-right: 1px solid #dbd7d7;
 }
-
 .shop-score td {
   height: 23px;
   padding-left: 10px;
 }
-
 .shop-score .score {
   color: #5ea732;
 }
 .shop-score .score-better {
   color: #f13e3a;
 }
-
 .shop-score .better {
   color: #5ea732;
 }
@@ -124,18 +114,15 @@ export default {
   /* color: #5ea732; */
   color: #f13e3a;
 }
-
 .shop-table {
   margin-right: 22px;
   font-size: 12px;
 }
-
 .shop-bottom {
   width: 100%;
   line-height: 70px;
   margin: 20px 0 0 35%;
 }
-
 .shop-bottom button {
   width: 100px;
   height: 30px;
