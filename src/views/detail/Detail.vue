@@ -1,15 +1,17 @@
 <template>
   <div id="detail">
-    <detail-nav-bar @titleClick="titleClick" class="detail-nav" />
+    <detail-nav-bar @titleClick="titleClick" class="detail-nav" ref="nav" />
     <scroll class="content" ref="scroll" @srcoll="contentScroll" :probe-type="3">
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
-      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
+      <detail-goods-info ref="goodsinfo" :detail-info="detailInfo" @imageLoad="imageLoad" />
       <detail-param-info ref="params" :param-info="paramInfo" />
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommend" />
     </scroll>
+    <detail-bottom-nav-bar @addCart="addToCart" />
+    <back-top @click.native="backClick" v-show="imgShow" />
   </div>
 </template>
 
@@ -21,13 +23,11 @@ import DetailShopInfo from './childComps/DetailShopInfo.vue';
 import DetailGoodsInfo from './childComps/DetailGoodsInfo.vue';
 import DetailParamInfo from './childComps/DetailParamInfo.vue';
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue';
+import DetailBottomNavBar from './childComps/DetailBottomNavBar.vue';
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail.js';
-// import { debounce } from 'common/utils.js';
 import GoodsList from 'components/content/goods/GoodsList.vue';
-import { itemListenerMixin } from 'common/mixin.js';
-
-
+import { itemListenerMixin, backTop } from 'common/mixin.js';
 
 import Scroll from 'components/common/scroll/Scroll.vue';
 
@@ -41,10 +41,11 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBottomNavBar,
     Scroll,
-    GoodsList
+    GoodsList,
   },
-  mixins: [itemListenerMixin]
+  mixins: [itemListenerMixin, backTop]
   ,
   data () {
     return {
@@ -57,7 +58,8 @@ export default {
       commentInfo: {},
       recommend: [],
       saveY: 0,
-      themeTopYs: []
+      themeTopYs: [],
+      currentIndex: 0,
     };
   },
   // 生命周期函数,当组件创建完毕时执行此函数
@@ -101,6 +103,17 @@ export default {
       // 但是图片没有渲染(不包含图片)
       // });
     });
+    // 0 5053 5919 6186
+
+    // 0 ~ 5053     0 
+    // 5054 ~ 5919  1
+    // 5919 ~ 6186  2
+    // 6186 >       3
+
+
+
+
+
   },
   mounted () {
   },
@@ -112,22 +125,35 @@ export default {
       this.$refs.scroll.refresh();
       this.themeTopYs = [];
       this.themeTopYs.push(0);
-      this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-      this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
-      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop - 30);
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop - 46);
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop + -50);
+      this.themeTopYs.push(Number.MAX_VALUE);
 
-      console.log(this.themeTopYs);
+      // console.log(this.themeTopYs);
     },
     titleClick (index) {
-      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index] + 50, 500);
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 500);
 
     },
     contentScroll (position) {
-      console.log(position);
-    }
-  },
-  destroyed () {
+      // console.log(Number.MAX_VALUE);
 
+      const positionY = -position.y;
+      let length = this.themeTopYs.length;
+      for (let i = 0; i < length - 1; i++) {
+        if (this.currentIndex !== i && ((positionY >= this.themeTopYs[i]) && (positionY < this.themeTopYs[i + 1]))) {
+          this.currentIndex = i;
+          // console.log(this.currentIndex);
+          this.$refs.nav.currentIndex = this.currentIndex;
+        }
+      }
+      this.imgShow = (-position.y) > 1000;
+    },
+    addToCart () {
+      console.log('^(*￣(oo)￣)^');
+
+    }
   },
 
 }
@@ -142,7 +168,7 @@ export default {
   height: 100vh;
 }
 .content {
-  height: calc(100vh - 44px);
+  height: calc(100vh - 44px - 49px);
 }
 .detail-nav {
   position: relative;

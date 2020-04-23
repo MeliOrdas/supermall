@@ -39,11 +39,10 @@ import NavBar from 'components/common/navbar/NavBar';
 import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/goods/GoodsList';
 import Scroll from 'components/common/scroll/Scroll';
-import BackTop from 'components/content/backTop/BackTop';
 
 
 import { getHomeMultiData, getHomeGoods } from 'network/home';
-import { itemListenerMixin } from 'common/mixin';
+import { itemListenerMixin, backTop } from 'common/mixin';
 
 export default {
 
@@ -60,8 +59,6 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop
-
   },
 
   /**
@@ -78,13 +75,12 @@ export default {
         'sell': { page: 0, list: [] }
       },
       currentType: 'pop',
-      imgShow: false,
       tabOffsetTop: 0,
       saveY: 0,
       isTabFixed: false,
     };
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTop],
 
   /**
    * 生命周期 创建组件时运行
@@ -97,25 +93,21 @@ export default {
     this.MgetHomeGoods('pop');
     this.MgetHomeGoods('new');
     this.MgetHomeGoods('sell');
-  },
-  // 防止多次数据请求的内存泄漏
-  mounted () {
+    console.log('created');
 
   },
-  destroyed () {
-    // console.log('123456');
-  },
+  // 防止多次数据请求的内存泄漏
   activated () {
-    this.$refs.scroll.scrollTo(0, this.saveY, 0);
-    // console.log('点回来');
+    this.$refs.scroll.scrollTo(0, this.saveY, 300);
     this.$refs.scroll.refresh();
+    // console.log('点回来');
 
   },
   deactivated () {
-    // console.log('点进来');
     this.saveY = this.$refs.scroll.getScrollY();
+    // this.$bus.$off('itemImgLoad', this.itemImgListener);
+    // console.log('点进来');
     // console.log(this.saveY);
-
   },
 
 
@@ -144,7 +136,6 @@ export default {
       this.$refs.tabControl2.currentIndex = index;
     },
 
-    backClick () { this.$refs.scroll.scrollTo(); },
     contentSrcoll (position) {
       // console.log(position);
       this.imgShow = (-position.y) > 1000;
