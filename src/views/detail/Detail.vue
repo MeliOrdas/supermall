@@ -80,6 +80,8 @@ export default {
       // 通过类来创建需要使用的数据
       // 3.创建商品的对象
       this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
+      // console.log(this.goods);
+
       // 4.获取店铺信息
       this.shop = new Shop(data.shopInfo);
       //5.获取商品详情数据
@@ -151,8 +153,16 @@ export default {
       this.imgShow = (-position.y) > 1000;
     },
     addToCart () {
-      console.log('^(*￣(oo)￣)^');
+      //1.获取购物车需要展示的信息
+      const product = {};
+      product.image = this.topImages[0];
+      product.titile = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.lowNowPrice;
+      product.iid = this.iid;
 
+      //2.将商品添加至购物车
+      this.$store.commit('addCart', product);
     }
   },
 
