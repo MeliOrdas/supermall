@@ -58,7 +58,8 @@ export default {
 .shop-top {
   height: 100px;
   width: 100%;
-  line-height: 100px;
+  line-height: 74px;
+  display: flex;
 }
 .shop-top img {
   height: 50px;
@@ -68,13 +69,10 @@ export default {
   border: 2px solid #dbd7d7;
   border-radius: 25px;
 }
-.shop-middle-left,
-.info-goods,
-.info-salse {
-  float: left;
-}
 .shop-middle-right {
-  float: right;
+  /* width: 50%; */
+  margin-left: 10%;
+  text-align: center;
 }
 .salse-counter,
 .goods-counter {
@@ -90,11 +88,15 @@ export default {
 }
 .info-salse,
 .info-goods {
-  margin: 15px;
+  width: 100%;
+  margin: auto 0;
+}
+.shop-middle-item {
+  display: flex;
+  width: 50%;
 }
 .info-goods {
   margin-right: 0;
-  padding-right: 20px;
   border-right: 1px solid #dbd7d7;
 }
 .shop-score td {
@@ -111,17 +113,15 @@ export default {
   color: #5ea732;
 }
 .shop-score .better-more {
-  /* color: #5ea732; */
   color: #f13e3a;
 }
 .shop-table {
-  margin-right: 22px;
   font-size: 12px;
 }
 .shop-bottom {
   width: 100%;
-  line-height: 70px;
-  margin: 20px 0 0 35%;
+  margin: 10px 0;
+  text-align: center;
 }
 .shop-bottom button {
   width: 100px;
@@ -131,5 +131,9 @@ export default {
   outline: none;
   background-color: #ededed;
   color: #000;
+}
+.shop-middle {
+  width: 100%;
+  display: flex;
 }
 </style>

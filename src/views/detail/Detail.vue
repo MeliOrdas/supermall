@@ -2,6 +2,9 @@
   <div id="detail">
     <detail-nav-bar @titleClick="titleClick" class="detail-nav" ref="nav" />
     <scroll class="content" ref="scroll" @srcoll="contentScroll" :probe-type="3">
+      <ul>
+        <li v-for="item in $store.state.cartList" :key="item.iid">{{item}}</li>
+      </ul>
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -162,7 +165,7 @@ export default {
       product.iid = this.iid;
 
       //2.将商品添加至购物车
-      this.$store.commit('addCart', product);
+      this.$store.dispatch('addCart', product);
     }
   },
 
@@ -172,16 +175,20 @@ export default {
 <style scoped>
 #detail {
   position: relative;
-  z-index: 10;
+  z-index: 15;
   background-color: #fff;
-  /* position: absolute; */
   height: 100vh;
+  padding-top: 44px;
 }
 .content {
   height: calc(100vh - 44px - 49px);
+  overflow: hidden;
 }
 .detail-nav {
-  position: relative;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
   z-index: 10;
   background-color: #ffffff;
 }

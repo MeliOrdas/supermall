@@ -71,9 +71,12 @@ export default {
 }
 
 .bottom-bar {
-  position: relative;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
   width: 100%;
   overflow: hidden;
   bottom: 0;
@@ -85,6 +88,7 @@ export default {
   height: 49px;
   line-height: 49px;
   text-align: center;
+  font-size: 12px;
 }
 
 .shoppingCar {

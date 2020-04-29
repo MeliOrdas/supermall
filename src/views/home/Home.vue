@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav">
-      <div slot="center">购物车</div>
+      <div slot="center">首页</div>
     </nav-bar>
     <tab-control
       ref="tabControl1"
@@ -203,7 +203,6 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-
   position: fixed;
   left: 0;
   right: 0;
@@ -217,9 +216,6 @@ export default {
 }
 
 .content {
-  /* height: 400px; */
-  /* background-color: red; */
-
   overflow: hidden;
   position: absolute;
   top: 44px;
