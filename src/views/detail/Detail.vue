@@ -12,6 +12,7 @@
     </scroll>
     <detail-bottom-nav-bar @addCart="addToCart" />
     <back-top @click.native="backClick" v-show="imgShow" />
+    <!-- <toast :massage="massage" :show="show" /> -->
   </div>
 </template>
 
@@ -25,11 +26,14 @@ import DetailParamInfo from './childComps/DetailParamInfo.vue';
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue';
 import DetailBottomNavBar from './childComps/DetailBottomNavBar.vue';
 
-import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail.js';
 import GoodsList from 'components/content/goods/GoodsList.vue';
 import { itemListenerMixin, backTop } from 'common/mixin.js';
+import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail.js';
+import { mapActions } from 'vuex';
 
 import Scroll from 'components/common/scroll/Scroll.vue';
+// import Toast from 'components/common/toast/Toast.vue';
+
 
 export default {
   name: 'Detail',
@@ -44,6 +48,7 @@ export default {
     DetailBottomNavBar,
     Scroll,
     GoodsList,
+    // Toast
   },
   mixins: [itemListenerMixin, backTop]
   ,
@@ -60,6 +65,8 @@ export default {
       saveY: 0,
       themeTopYs: [],
       currentIndex: 0,
+      // massage: '',
+      // show: false
     };
   },
   // 生命周期函数,当组件创建完毕时执行此函数
@@ -160,10 +167,24 @@ export default {
       product.desc = this.goods.desc;
       product.price = this.goods.lowNowPrice;
       product.iid = this.iid;
-
       //2.将商品添加至购物车
-      this.$store.dispatch('addCart', product);
-    }
+      // this.$store.dispatch('addCart', product).then(res => {
+      //   console.log(res);
+      // });
+      this.addCart(product).then((res) => {
+        // this.show = true;
+        // this.massage = res;
+        // console.log(this.$toast);
+        this.$toast.show(res, 2500);
+        // console.log(res);
+        // setTimeout(() => {
+        //   this.show = false;
+        //   this.message = '';
+        // }, 2500);
+      });
+
+    },
+    ...mapActions(['addCart'])
   },
 
 }

@@ -1,12 +1,12 @@
 <template>
-  <div class="bottom-bar">
+  <div class="bottom-cart-bar">
     <div class="check-content">
       <check-button :active-color="isSelectAll" class="check-buttom" @click.native="checkClick" />
       <span>全选</span>
     </div>
     <div class="collectPrice">合计:{{totalPrice}}</div>
 
-    <div class="caculate">去计算({{checkLength}})</div>
+    <div class="caculate" @click="calcClick">去计算({{checkLength}})</div>
   </div>
 </template>
 
@@ -43,18 +43,33 @@ export default {
   methods: {
     checkClick () {
       this.isSelectAll ? this.cartList.forEach(item => item.check = false) : this.cartList.forEach(item => item.check = true);
+    },
+    calcClick () {
+      if (!this.isSelectAll) {
+        this.$toast.show('请选择购买商品', 2500);
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.bottom-bar {
-  position: relative;
+.bottom-cart-bar {
+  /* position: relative;
   display: flex;
-  height: 40px;
   line-height: 40px;
   background-color: #eee;
+  font-size: 12px; */
+  font-size: 15px;
+  position: fixed;
+  right: 0;
+  bottom: 45px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  /* padding: 0 10px; */
 }
 
 .check-content {
@@ -77,8 +92,10 @@ export default {
 
 .caculate {
   width: 80px;
+  height: 50px;
+  line-height: 50px;
   background-color: skyblue;
   text-align: center;
-  font-size: 12px;
+  font-size: 15px;
 }
 </style>

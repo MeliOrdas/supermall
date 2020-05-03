@@ -1,5 +1,5 @@
 <template>
-  <div id="shop-item">
+  <div class="shop-item">
     <!-- 按钮 -->
     <div class="item-selector">
       <check-button :activeColor="product.check" @click.native="checkClick" />
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-#shop-item {
+.shop-item {
   width: 100%;
   display: flex;
   font-size: 0;

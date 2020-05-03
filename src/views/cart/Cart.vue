@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div class="cart-item">
     <!-- 导航 -->
     <nav-bar class="cart-nav">
       <div slot="center" class="centers">购物车({{length}})</div>
@@ -55,7 +55,9 @@ export default {
   z-index: 10;
   overflow: hidden;
 }
-.cart {
+.cart-item {
   height: 100%;
+  width: 100%;
+  font-size: 12px;
 }
 </style>

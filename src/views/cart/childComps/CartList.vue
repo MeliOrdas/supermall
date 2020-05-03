@@ -36,11 +36,20 @@ export default {
 
 <style scoped>
 .cart-list {
+  width: 100%;
   height: 100%;
-  margin-top: 44px;
+  /* margin-top: 44px; */
   overflow: hidden;
 }
 .content {
-  height: calc(100vh - 44px - 49px - 40px);
+  /* height: calc(100vh - 44px - 49px - 40px); */
+  position: absolute;
+  top: 44px;
+  right: 0;
+  bottom: 99px;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+  background-color: #ffffff;
 }
 </style>
